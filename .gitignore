@@ -20,8 +20,8 @@ build/*
 !default.perspectivev3
 
 # Delete If Needed
-#*.xcworkspace
-#!default.xcworkspace
+*.xcworkspace
+!default.xcworkspace
 
 xcuserdata
 profile
