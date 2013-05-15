@@ -14,10 +14,14 @@
 @end
 
 @implementation ViewController
-@synthesize loginTableView;	
+@synthesize loginTableView;
+
+
+#pragma mark - UITableview Delegate and Datasource
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
-}	
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
@@ -26,68 +30,77 @@
     else {
         return 2;
     }
-}	
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 44;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     static NSString *CellIdentifier = @"Cell";
     LoginCell *cell = (LoginCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) 
-    {
+    if (cell == nil) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LoginCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
     }
-
-//    [cell.lbllabel setText:@"User"];
-//    [cell.textLabel setText:@"User"];
-//    cell.textLabel.text = @"sd";
+    
     if (indexPath.row == 0) {
-        cell.txtBox.placeholder=@"example@gmail.com";
-        cell.lbllabel.text = @"Email";
+        cell.txtBox.placeholder = @"example@gmail.com";
+        cell.lbllabel.text = @"Email:";
     }
     else {
-        cell.txtBox.placeholder=@"Required";
-        cell.lbllabel.text = @"Password";
+        cell.txtBox.placeholder = @"Required";
+        cell.lbllabel.text = @"Password:";
+        [cell.txtBox setSecureTextEntry:YES];
     }
-    cell.Tag=indexPath.row;
-    
-
+    cell.Tag = indexPath.row;
     
     return cell;
 }
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"tab");
-}
 
 
-- (void)viewDidLoad
-{
+#pragma mark - UIView
+
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [loginTableView setScrollEnabled:NO];
     [loginTableView setSeparatorColor:[UIColor blackColor]];
 }
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [self setLoginTableView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+
+#pragma mark - UI Events
+
+
+- (IBAction)btnTouchUp:(id)sender {
+    NSIndexPath *indexEmail = [NSIndexPath indexPathForRow:0 inSection:0];
+    LoginCell *cellEmail = (LoginCell *)[loginTableView cellForRowAtIndexPath:indexEmail];
+    NSString *strEmail = cellEmail.txtBox.text;
+    
+    NSIndexPath *indexPassword = [NSIndexPath indexPathForRow:1 inSection:0];
+    LoginCell *cellPassword = (LoginCell *)[loginTableView cellForRowAtIndexPath:indexPassword];
+    NSString *strPassword = cellPassword.txtBox.text;
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Welcome!!!!"
+                                                    message:[NSString stringWithFormat:@"hello %@!!!!!",strEmail]
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    
+    NSLog(@"Name: %@ and password: %@ ",strEmail,strPassword);
+
 }
 
 @end
