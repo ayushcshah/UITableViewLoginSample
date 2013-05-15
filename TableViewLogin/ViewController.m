@@ -48,6 +48,7 @@
     if (indexPath.row == 0) {
         cell.txtBox.placeholder = @"example@gmail.com";
         cell.lbllabel.text = @"Email:";
+        [cell.txtBox setKeyboardType:UIKeyboardTypeEmailAddress];
     }
     else {
         cell.txtBox.placeholder = @"Required";
@@ -84,23 +85,34 @@
 
 
 - (IBAction)btnTouchUp:(id)sender {
+    //get Email from Cell UITextField.
     NSIndexPath *indexEmail = [NSIndexPath indexPathForRow:0 inSection:0];
     LoginCell *cellEmail = (LoginCell *)[loginTableView cellForRowAtIndexPath:indexEmail];
-    NSString *strEmail = cellEmail.txtBox.text;
+    NSString *strEmail = [cellEmail.txtBox.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
+    //get Password from Cell UITextField.
     NSIndexPath *indexPassword = [NSIndexPath indexPathForRow:1 inSection:0];
     LoginCell *cellPassword = (LoginCell *)[loginTableView cellForRowAtIndexPath:indexPassword];
-    NSString *strPassword = cellPassword.txtBox.text;
+    NSString *strPassword = [cellPassword.txtBox.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if ([strEmail isEqualToString:@""] || [strEmail isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error!!!!"
+                                                        message:@"Please Enter Email and Passeord"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Welcome!!!!"
+                                                        message:[NSString stringWithFormat:@"hello %@!!!!!",strEmail]
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+        NSLog(@"Name: %@ and password: %@ ",strEmail,strPassword);
+    }
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Welcome!!!!"
-                                                    message:[NSString stringWithFormat:@"hello %@!!!!!",strEmail]
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-    
-    NSLog(@"Name: %@ and password: %@ ",strEmail,strPassword);
-
 }
 
 @end
